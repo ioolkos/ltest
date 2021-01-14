@@ -162,15 +162,15 @@
   (run (default-opts)))
 
 (defun run
-  (((= `#m(test-type all) opts))
+  (((= `#m((test-type all)) opts))
    (all opts))
-  (((= `#m(test-type unit) opts))
+  (((= `#m((test-type unit)) opts))
    (unit opts))
-  (((= `#m(test-type system) opts))
+  (((= `#m((test-type system)) opts))
    (system opts))
-  (((= `#m(test-type integration) opts))
+  (((= `#m((test-type integration)) opts))
    (integration opts))
-  ((`#m(test-type ,test-type))
+  ((`#m((test-type ,test-type)))
    `#(error ,(io_lib:format "Unknown test type: ~p" `(,test-type)))))
 
 (defun all ()
@@ -178,12 +178,12 @@
 
 (defun all (opts)
   (let* ((merged-opts (maps:merge (default-opts) opts))
-         (test-opts (maps:merge merged-opts #m(suite-headers false)))
+         (test-opts (maps:merge merged-opts #m((suite-headers false))))
          (state (make-state color? (mref opts 'color))))
     (maybe-suite-header opts state)
-    (unit (maps:merge test-opts #m(test-type unit)))
-    (system (maps:merge test-opts #m(test-type system)))
-    (integration (maps:merge test-opts #m(test-type integration)))
+    (unit (maps:merge test-opts #m((test-type unit))))
+    (system (maps:merge test-opts #m((test-type system))))
+    (integration (maps:merge test-opts #m((test-type integration))))
     (maybe-suite-footer opts state)))
 
 (defun unit ()
@@ -228,11 +228,11 @@
 ;;; New API support functions
 
 (defun default-opts ()
-  #m(color true
-     suite-headers true
-     test-listener ltest-listener
-     test-type unit
-     verbose true))
+  #m((color true)
+     (suite-headers true)
+     (test-listener ltest-listener)
+     (test-type unit)
+     (verbose true)))
 
 (defun maybe-suite-header (opts state)
   (if (mref opts 'suite-headers)
